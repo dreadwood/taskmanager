@@ -1,4 +1,11 @@
-'use strict';
+'use strict';;
+
+const TASK_COUNT = 3
+
+const RenderPosition = {
+  AFTER_BEGIN: `afterbegin`,
+  BEFOR_END: `beforeend`,
+};
 
 const createSiteMenuTemplate = () => {
   return (
@@ -461,26 +468,26 @@ const createStatisticTemplate = () => {
   )
 }
 
-const render = (container, template, place) => {
+const render = (container, template, place = RenderPosition.BEFOR_END) => {
   container.insertAdjacentHTML(place, template);
 };
 
 const mainElement = document.querySelector(`.main`);
 const headerElement = mainElement.querySelector(`.main__control`);
 
-render(headerElement, createSiteMenuTemplate(), `beforeend`);
-render(mainElement, createFilterTemplate(), `beforeend`);
-render(mainElement, createBoardTemplate(), `beforeend`);
+render(headerElement, createSiteMenuTemplate());
+render(mainElement, createFilterTemplate());
+render(mainElement, createBoardTemplate());
 
 const boardElement = mainElement.querySelector(`.board`);
 
-render(boardElement, createSortTemplate(), `beforeend`);
-render(boardElement, createTasklistTemplate(), `beforeend`);
-render(boardElement, createLoadMoreButtonTemplate(), `beforeend`);
+render(boardElement, createSortTemplate());
+render(boardElement, createTasklistTemplate());
+render(boardElement, createLoadMoreButtonTemplate());
 
 const tasklistElement = mainElement.querySelector(`.board__tasks`);
 
-render(tasklistElement, createTaskEditTemplate(), `beforeend`);
-render(tasklistElement, createTaskTemplate(), `beforeend`);
-render(tasklistElement, createTaskTemplate(), `beforeend`);
-render(tasklistElement, createTaskTemplate(), `beforeend`);
+render(tasklistElement, createTaskEditTemplate());
+for (let i = 0; i < TASK_COUNT; i++) {
+  render(tasklistElement, createTaskTemplate());
+}
