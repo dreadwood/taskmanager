@@ -460,3 +460,7 @@ const createStatisticTemplate = () => {
     </section>`
   )
 }
+
+const render = (container, template, place) => {
+  container.insertAdjacentHTML(place, template);
+};
