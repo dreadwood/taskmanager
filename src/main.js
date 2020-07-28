@@ -464,3 +464,23 @@ const createStatisticTemplate = () => {
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
+
+const mainElement = document.querySelector(`.main`);
+const headerElement = mainElement.querySelector(`.main__control`);
+
+render(headerElement, createSiteMenuTemplate(), `beforeend`);
+render(mainElement, createFilterTemplate(), `beforeend`);
+render(mainElement, createBoardTemplate(), `beforeend`);
+
+const boardElement = mainElement.querySelector(`.board`);
+
+render(boardElement, createSortTemplate(), `beforeend`);
+render(boardElement, createTasklistTemplate(), `beforeend`);
+render(boardElement, createLoadMoreButtonTemplate(), `beforeend`);
+
+const tasklistElement = mainElement.querySelector(`.board__tasks`);
+
+render(tasklistElement, createTaskEditTemplate(), `beforeend`);
+render(tasklistElement, createTaskTemplate(), `beforeend`);
+render(tasklistElement, createTaskTemplate(), `beforeend`);
+render(tasklistElement, createTaskTemplate(), `beforeend`);
