@@ -6,8 +6,9 @@ import {createTaskTemplate} from './view/task.js';
 import {createTaskEditTemplate} from './view/task-edit.js';
 import {createLoadMoreButtonTemplate} from './view/load-more-button.js';
 // import {createStatisticTemplate} from './view/statistic.js';
+import {generateTask} from './mock/task.js';
 
-const TASK_COUNT = 3;
+const TASK_COUNT = 18;
 
 const RenderPosition = {
   AFTER_BEGIN: `afterbegin`,
@@ -17,6 +18,8 @@ const RenderPosition = {
 const render = (container, template, place = RenderPosition.BEFOR_END) => {
   container.insertAdjacentHTML(place, template);
 };
+
+const tasks = new Array(TASK_COUNT).fill(``).map(generateTask);
 
 const mainElement = document.querySelector(`.main`);
 const headerElement = mainElement.querySelector(`.main__control`);
@@ -34,5 +37,5 @@ const tasklistElement = mainElement.querySelector(`.board__tasks`);
 
 render(tasklistElement, createTaskEditTemplate());
 for (let i = 0; i < TASK_COUNT; i++) {
-  render(tasklistElement, createTaskTemplate());
+  render(tasklistElement, createTaskTemplate(tasks[i]));
 }
