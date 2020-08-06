@@ -25,7 +25,7 @@ const mainElement = document.querySelector(`.main`);
 const headerElement = mainElement.querySelector(`.main__control`);
 
 render(headerElement, createSiteMenuTemplate());
-render(mainElement, createFilterTemplate());
+render(mainElement, createFilterTemplate(tasks));
 render(mainElement, createBoardTemplate());
 
 const boardElement = mainElement.querySelector(`.board`);

@@ -1,5 +1,5 @@
 import {COLORS} from '../const.js';
-import {isExpired, isRepeatingTask, humanizeTaskDate} from '../utils.js';
+import {isExpiredTask, isRepeatingTask, humanizeTaskDate} from '../utils.js';
 
 const createTaskEditDateTemplate = (dueDate) => {
   return (
@@ -82,7 +82,7 @@ export const createTaskEditTemplate = (task = {}) => {
     },
   } = task;
 
-  const deadlineClass = isExpired(dueDate)
+  const deadlineClass = isExpiredTask(dueDate)
     ? `card--deadline`
     : ``;
 

@@ -1,4 +1,4 @@
-import {isExpired, isRepeatingTask, humanizeTaskDate} from '../utils.js';
+import {isExpiredTask, isRepeatingTask, humanizeTaskDate} from '../utils.js';
 
 const createButtonMarkup = (name, isActive = true) => {
   return (
@@ -23,7 +23,7 @@ export const createTaskTemplate = (task) => {
     ? humanizeTaskDate(dueDate)
     : ``;
 
-  const deadlineClass = isExpired(dueDate)
+  const deadlineClass = isExpiredTask(dueDate)
     ? `card--deadline`
     : ``;
 
