@@ -1,14 +1,4 @@
-const isExpired = (dueDate) => {
-  if (dueDate === null) {
-    return false;
-  }
-
-  let currentDate = new Date();
-  currentDate.setHours(23, 59, 59, 999);
-  currentDate = new Date(currentDate);
-
-  return currentDate.getTime() > dueDate.getTime();
-};
+import {isExpired, isRepeatingTask, humanizeTaskDate} from '../utils.js';
 
 const createButtonMarkup = (name, isActive = true) => {
   return (
@@ -17,10 +7,6 @@ const createButtonMarkup = (name, isActive = true) => {
       ${name}
     </button>`
   );
-};
-
-const isRepeatingTask = (repeating) => {
-  return Object.values(repeating).some(Boolean);
 };
 
 export const createTaskTemplate = (task) => {
@@ -34,7 +20,7 @@ export const createTaskTemplate = (task) => {
   } = task;
 
   const date = (dueDate !== null)
-    ? dueDate.toLocaleString(`en-GB`, {day: `numeric`, month: `long`})
+    ? humanizeTaskDate(dueDate)
     : ``;
 
   const deadlineClass = isExpired(dueDate)

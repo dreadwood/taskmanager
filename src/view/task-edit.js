@@ -1,26 +1,5 @@
-const COLORS = [
-  `black`,
-  `yellow`,
-  `blue`,
-  `green`,
-  `pink`
-];
-
-const isExpired = (dueDate) => {
-  if (dueDate === null) {
-    return false;
-  }
-
-  let currentDate = new Date();
-  currentDate.setHours(23, 59, 59, 999);
-  currentDate = new Date(currentDate);
-
-  return currentDate.getTime() > dueDate.getTime();
-};
-
-const isRepeatingTask = (repeating) => {
-  return Object.values(repeating).some(Boolean);
-};
+import {COLORS} from '../const.js';
+import {isExpired, isRepeatingTask, humanizeTaskDate} from '../utils.js';
 
 const createTaskEditDateTemplate = (dueDate) => {
   return (
@@ -35,7 +14,7 @@ const createTaskEditDateTemplate = (dueDate) => {
           type="text"
           placeholder=""
           name="date"
-          value="${dueDate.toLocaleString(`en-GB`, {day: `numeric`, month: `long`})}"
+          value="${humanizeTaskDate(dueDate)}"
         >
       </label>
     </fieldset>` : ``}`

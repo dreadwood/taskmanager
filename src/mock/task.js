@@ -1,41 +1,5 @@
-const DESCRIPTION = [
-  `Изучить теорию`,
-  `Сделать домашку`,
-  `Пройти интенсив на соточку`,
-];
-
-const COLOR = [
-  `black`,
-  `yellow`,
-  `blue`,
-  `green`,
-  `pink`,
-];
-
-const DAYS_WEEK = [
-  `mo`,
-  `tu`,
-  `we`,
-  `th`,
-  `fr`,
-  `sa`,
-  `su`,
-];
-
-// Функция генерации случайного целого числа из диапазона
-// Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
-const getRandomInteger = (a = 1, b = 0) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
-
-const getRandomArrayItems = (array) => {
-  const randomIndex = getRandomInteger(array.length - 1);
-
-  return array[randomIndex];
-};
+import {DESCRIPTION, COLORS, DAYS_WEEK} from '../const.js';
+import {getRandomInteger, getRandomArrayItems} from '../utils.js';
 
 const generateDate = () => {
   const maxDaysGap = 7;
@@ -60,7 +24,7 @@ export const generateTask = () => {
   const description = getRandomArrayItems(DESCRIPTION);
   const dueDate = getRandomInteger() ? generateDate() : null;
   const repeatingDays = dueDate ? generateRepeatingDays() : generateRepeatingDays(true);
-  const color = getRandomArrayItems(COLOR);
+  const color = getRandomArrayItems(COLORS);
   const isFavorite = Boolean(getRandomInteger());
   const isArchive = Boolean(getRandomInteger());
 
