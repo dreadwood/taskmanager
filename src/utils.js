@@ -1,3 +1,12 @@
+export const RenderPosition = {
+  AFTER_BEGIN: `afterbegin`,
+  BEFOR_END: `beforeend`,
+};
+
+export const renderTemplate = (container, template, place = RenderPosition.BEFOR_END) => {
+  container.insertAdjacentHTML(place, template);
+};
+
 // Функция генерации случайного целого числа из диапазона
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
 export const getRandomInteger = (a = 1, b = 0) => {
