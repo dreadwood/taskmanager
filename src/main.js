@@ -1,4 +1,4 @@
-import {createSiteMenuTemplate} from './view/site-menu.js';
+import SiteMenuView from './view/site-menu.js';
 import {createFilterTemplate} from './view/filter.js';
 import {createBoardTemplate} from './view/board.js';
 import {createSortingTemplate} from './view/sorting.js';
@@ -7,7 +7,7 @@ import {createTaskEditTemplate} from './view/task-edit.js';
 import {createLoadMoreButtonTemplate} from './view/load-more-button.js';
 // import {createStatisticTemplate} from './view/statistic.js';
 import {generateTask} from './mock/task.js';
-import {RenderPosition, renderTemplate} from './utils.js';
+import {RenderPosition, renderTemplate, renderElement} from './utils.js';
 
 const TASK_COUNT = 18;
 const TASK_COUNT_PER_STEP = 8;
@@ -17,7 +17,7 @@ const tasks = new Array(TASK_COUNT).fill(``).map(generateTask);
 const mainElement = document.querySelector(`.main`);
 const headerElement = mainElement.querySelector(`.main__control`);
 
-renderTemplate(headerElement, createSiteMenuTemplate());
+renderElement(headerElement, new SiteMenuView().getElement());
 renderTemplate(mainElement, createFilterTemplate(tasks));
 renderTemplate(mainElement, createBoardTemplate());
 
