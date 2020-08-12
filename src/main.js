@@ -5,6 +5,7 @@ import SortingView from './view/sorting.js';
 import TaskView from './view/task.js';
 import TaskEditView from './view/task-edit.js';
 import LoadMoreButtonView from './view/load-more-button.js';
+import NoTaskView from './view/no-task.js';
 // import StatisticView from './view/statistic.js';
 import {generateTask} from './mock/task.js';
 import {RenderPosition, render} from './utils.js';
@@ -59,28 +60,32 @@ render(mainElement, new BoardView().getElement());
 const boardElement = mainElement.querySelector(`.board`);
 const tasklistElement = mainElement.querySelector(`.board__tasks`);
 
-render(boardElement, new SortingView().getElement(), RenderPosition.AFTER_BEGIN);
+if (tasks.every((task) => task.isArchive)) {
+  render(boardElement, new NoTaskView().getElement(), RenderPosition.AFTER_BEGIN);
+} else {
+  render(boardElement, new SortingView().getElement(), RenderPosition.AFTER_BEGIN);
 
-for (let i = 0; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
-  renderTask(tasklistElement, tasks[i]);
-}
+  for (let i = 0; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
+    renderTask(tasklistElement, tasks[i]);
+  }
 
-if (tasks.length > TASK_COUNT_PER_STEP) {
-  let renderedTaskCount = TASK_COUNT_PER_STEP;
+  if (tasks.length > TASK_COUNT_PER_STEP) {
+    let renderedTaskCount = TASK_COUNT_PER_STEP;
 
-  render(boardElement, new LoadMoreButtonView().getElement());
+    render(boardElement, new LoadMoreButtonView().getElement());
 
-  const loadMoreButton = boardElement.querySelector(`.load-more`);
-  loadMoreButton.addEventListener(`click`, (evt) => {
-    evt.preventDefault();
-    tasks
-      .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-      .forEach((task) => renderTask(tasklistElement, task));
+    const loadMoreButton = boardElement.querySelector(`.load-more`);
+    loadMoreButton.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      tasks
+        .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
+        .forEach((task) => renderTask(tasklistElement, task));
 
-    renderedTaskCount += TASK_COUNT_PER_STEP;
+      renderedTaskCount += TASK_COUNT_PER_STEP;
 
-    if (renderedTaskCount >= tasks.length) {
-      loadMoreButton.remove();
-    }
-  });
+      if (renderedTaskCount >= tasks.length) {
+        loadMoreButton.remove();
+      }
+    });
+  }
 }
