@@ -1,4 +1,4 @@
-import {isExpiredTask, isRepeatingTask, humanizeTaskDate} from '../utils.js';
+import {isExpiredTask, isRepeatingTask, humanizeTaskDate, createElement} from '../utils.js';
 
 const createButtonMarkup = (name, isActive = true) => {
   return (
@@ -9,7 +9,7 @@ const createButtonMarkup = (name, isActive = true) => {
   );
 };
 
-export const createTaskTemplate = (task) => {
+const createTaskTemplate = (task) => {
   const {
     description,
     dueDate,
@@ -71,3 +71,26 @@ export const createTaskTemplate = (task) => {
     </article>`
   );
 };
+
+export default class TaskView {
+  constructor(task) {
+    this._element = null;
+    this._task = task;
+  }
+
+  getTemplate() {
+    return createTaskTemplate(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -1,5 +1,20 @@
 import {COLORS} from '../const.js';
-import {isExpiredTask, isRepeatingTask, humanizeTaskDate} from '../utils.js';
+import {isExpiredTask, isRepeatingTask, humanizeTaskDate, createElement} from '../utils.js';
+
+const BLANK_TASK = {
+  description: ``,
+  dueDate: null,
+  color: COLORS[0],
+  repeatingDays: {
+    mo: false,
+    tu: false,
+    we: false,
+    th: false,
+    fr: false,
+    sa: false,
+    su: false
+  }
+};
 
 const createTaskEditDateTemplate = (dueDate) => {
   return (
@@ -66,20 +81,12 @@ const createTaskEditColorsTemplate = (currentColor) => {
 };
 
 
-export const createTaskEditTemplate = (task = {}) => {
+const createTaskEditTemplate = (task) => {
   const {
-    description = ``,
-    dueDate = null,
-    color = `black`,
-    repeatingDays = {
-      mo: false,
-      tu: false,
-      we: false,
-      th: false,
-      fr: false,
-      sa: false,
-      su: false
-    },
+    description,
+    dueDate,
+    color,
+    repeatingDays,
   } = task;
 
   const deadlineClass = isExpiredTask(dueDate)
@@ -138,3 +145,27 @@ export const createTaskEditTemplate = (task = {}) => {
     </article>`
   );
 };
+
+export default class TaskEditView {
+  constructor(task = BLANK_TASK) {
+    this._element = null;
+    this._task = task;
+  }
+
+  getTemplate() {
+    return createTaskEditTemplate(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      // console.log(createElement(this.getTemplate()));
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

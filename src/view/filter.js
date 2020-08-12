@@ -1,4 +1,4 @@
-import {isExpiredTask, isExpiredTaskToday, isRepeatingTask} from '../utils.js';
+import {isExpiredTask, isExpiredTaskToday, isRepeatingTask, createElement} from '../utils.js';
 
 const taskToFilterMap = {
   all: (tasks) => tasks.filter((task) => !task.isArchive).length,
@@ -45,7 +45,7 @@ const createFilterItemTemplate = (filter, isChecked) => {
   );
 };
 
-export const createFilterTemplate = (tasks) => {
+const createFilterTemplate = (tasks) => {
   const filters = generateFilter(tasks);
   const filterItemTemplate = filters
     .map((filter, index) => createFilterItemTemplate(filter, index === 0))
@@ -57,3 +57,26 @@ export const createFilterTemplate = (tasks) => {
     </section>`
   );
 };
+
+export default class FilterView {
+  constructor(tasks) {
+    this._element = null;
+    this._tasks = tasks;
+  }
+
+  getTemplate() {
+    return createFilterTemplate(this._tasks);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
