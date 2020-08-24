@@ -1,4 +1,5 @@
-import {isExpiredTask, isExpiredTaskToday, isRepeatingTask, createElement} from '../utils.js';
+import {isExpiredTask, isExpiredTaskToday, isRepeatingTask} from '../utils.js';
+import AbstractView from './abstract.js';
 
 const taskToFilterMap = {
   all: (tasks) => tasks.filter((task) => !task.isArchive).length,
@@ -58,25 +59,13 @@ const createFilterTemplate = (tasks) => {
   );
 };
 
-export default class FilterView {
+export default class FilterView extends AbstractView {
   constructor(tasks) {
-    this._element = null;
+    super();
     this._tasks = tasks;
   }
 
   getTemplate() {
     return createFilterTemplate(this._tasks);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
