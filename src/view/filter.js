@@ -1,4 +1,4 @@
-import {isExpiredTask, isExpiredTaskToday, isRepeatingTask} from '../utils.js';
+import {isExpiredTask, isExpiredTaskToday, isRepeatingTask} from '../utils/task.js';
 import AbstractView from './abstract.js';
 
 const taskToFilterMap = {

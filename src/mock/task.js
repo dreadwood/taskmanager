@@ -1,5 +1,5 @@
 import {DESCRIPTION, COLORS, DAYS_WEEK} from '../const.js';
-import {getRandomInteger, getRandomArrayItems} from '../utils.js';
+import {getRandomInteger, getRandomArrayItems} from '../utils/common.js';
 
 const generateDate = () => {
   const maxDaysGap = 7;

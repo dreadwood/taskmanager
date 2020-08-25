@@ -1,4 +1,4 @@
-import {isExpiredTask, isRepeatingTask, humanizeTaskDate} from '../utils.js';
+import {isExpiredTask, isRepeatingTask, humanizeTaskDate} from '../utils/task.js';
 import AbstractView from './abstract.js';
 
 const createButtonMarkup = (name, isActive = true) => {
