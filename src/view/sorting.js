@@ -4,9 +4,9 @@ import {SortingTypes} from '../const.js';
 const createSortingTemplate = () => {
   return (
     `<div class="board__filter-list">
-      <a href="#" class="board__filter" date-sorting-type=${SortingTypes.DEFAULT}>SORT BY DEFAULT</a>
-      <a href="#" class="board__filter" date-sorting-type=${SortingTypes.DATE_UP}>SORT BY DATE up</a>
-      <a href="#" class="board__filter" date-sorting-type=${SortingTypes.DATE_DOWN}>SORT BY DATE down</a>
+      <a href="#" class="board__filter" data-sorting-type="${SortingTypes.DEFAULT}">SORT BY DEFAULT</a>
+      <a href="#" class="board__filter" data-sorting-type="${SortingTypes.DATE_UP}">SORT BY DATE up</a>
+      <a href="#" class="board__filter" data-sorting-type="${SortingTypes.DATE_DOWN}">SORT BY DATE down</a>
     </div>`
   );
 };
@@ -15,8 +15,9 @@ export default class SortingView extends AbstractView {
   constructor() {
     super();
 
-    this._sortingTypeChangeHandler = this._sortingTypeChangeHandler(this);
+    this._sortingTypeChangeHandler = this._sortingTypeChangeHandler.bind(this);
   }
+
   getTemplate() {
     return createSortingTemplate();
   }
@@ -27,7 +28,7 @@ export default class SortingView extends AbstractView {
     }
 
     evt.preventDefault();
-    this._callback.sortingTypeChange(evt.target.dataet.sortingType);
+    this._callback.sortingTypeChange(evt.target.dataset.sortingType);
   }
 
   setSortingTypeChangeHandler(callback) {
