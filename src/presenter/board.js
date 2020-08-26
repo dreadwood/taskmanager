@@ -5,7 +5,7 @@ import NoTaskView from "../view/no-task.js";
 import TaskView from "../view/task.js";
 import TaskEditView from "../view/task-edit.js";
 import LoadMoreButtonView from "../view/load-more-button.js";
-import {render, replace, RenderPosition} from "../utils/render.js";
+import {render, replace, remove, RenderPosition} from "../utils/render.js";
 
 const TASK_COUNT_PER_STEP = 8;
 
@@ -78,6 +78,21 @@ export default class Board {
   _renderLoadMoreButton() {
     // Метод, куда уйдёт логика по отрисовке компонетов задачи,
     // текущая функция renderTask в main.js
+    let renderedTaskCount = TASK_COUNT_PER_STEP;
+
+    const loadMoreButtonComponent = new LoadMoreButtonView();
+
+    render(this._boardComponent, loadMoreButtonComponent);
+
+    loadMoreButtonComponent.setClickHandler(() => {
+      this._renderTasks(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP);
+
+      renderedTaskCount += TASK_COUNT_PER_STEP;
+
+      if (renderedTaskCount >= this._boardTasks.length) {
+        remove(loadMoreButtonComponent);
+      }
+    });
   }
 
   _renderBoard() {
