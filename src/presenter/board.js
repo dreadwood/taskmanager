@@ -76,8 +76,6 @@ export default class Board {
   }
 
   _renderLoadMoreButton() {
-    // Метод, куда уйдёт логика по отрисовке компонетов задачи,
-    // текущая функция renderTask в main.js
     let renderedTaskCount = TASK_COUNT_PER_STEP;
 
     const loadMoreButtonComponent = new LoadMoreButtonView();
@@ -95,6 +93,14 @@ export default class Board {
     });
   }
 
+  _renderTaskList() {
+    this._renderTasks(0, Math.min(this._boardTasks.length, TASK_COUNT_PER_STEP));
+
+    if (this._boardTasks.length > TASK_COUNT_PER_STEP) {
+      this._renderLoadMoreButton();
+    }
+  }
+
   _renderBoard() {
     if (this._boardTasks.every((task) => task.isArchive)) {
       this._renderNoTasks();
@@ -102,11 +108,6 @@ export default class Board {
     }
 
     this._renderSorting();
-
-    this._renderTasks(0, Math.min(this._boardTasks.length, TASK_COUNT_PER_STEP));
-
-    if (this._boardTasks.length > TASK_COUNT_PER_STEP) {
-      this._renderLoadMoreButton();
-    }
+    this._renderTaskList();
   }
 }
