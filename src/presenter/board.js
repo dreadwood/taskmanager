@@ -1,5 +1,5 @@
 import BoardView from "../view/board.js";
-import SortingView from "../view/sort.js";
+import SortingView from "../view/sorting.js";
 import TaskListView from "../view/task-list.js";
 import NoTaskView from "../view/no-task.js";
 import TaskView from "../view/task.js";
@@ -9,7 +9,7 @@ import {render, replace, remove, RenderPosition} from "../utils/render.js";
 
 const TASK_COUNT_PER_STEP = 8;
 
-export default class Board {
+export default class BoardPresenter {
   constructor(boardContainer) {
     this._boardContainer = boardContainer;
 
@@ -23,7 +23,6 @@ export default class Board {
     this._boardTasks = boardTasks.slice();
 
     render(this._boardContainer, this._boardComponent);
-    render(this._boardComponent, this._taskListComponent); // move?
 
     this._renderBoard();
   }
@@ -108,6 +107,8 @@ export default class Board {
     }
 
     this._renderSorting();
+
+    render(this._boardComponent, this._taskListComponent); // move?
     this._renderTaskList();
   }
 }
