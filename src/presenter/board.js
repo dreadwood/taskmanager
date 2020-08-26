@@ -12,11 +12,15 @@ const TASK_COUNT_PER_STEP = 8;
 export default class BoardPresenter {
   constructor(boardContainer) {
     this._boardContainer = boardContainer;
+    this._renderedTaskCount = TASK_COUNT_PER_STEP;
 
     this._boardComponent = new BoardView();
     this._sortingComponent = new SortingView();
     this._taskListComponent = new TaskListView();
     this._noTaskComponent = new NoTaskView();
+    this._loadMoreButtonComponent = new LoadMoreButtonView();
+
+    this._handleLoadMoreButtonClick = this._handleLoadMoreButtonClick.bind(this);
   }
 
   init(boardTasks) {
@@ -74,22 +78,19 @@ export default class BoardPresenter {
     render(this._boardComponent, this._noTaskComponent, RenderPosition.AFTER_BEGIN); // remove RenderPosition
   }
 
+  _handleLoadMoreButtonClick() {
+    this._renderTasks(this._renderedTaskCount, this._renderedTaskCount + TASK_COUNT_PER_STEP);
+    this._renderedTaskCount += TASK_COUNT_PER_STEP;
+
+    if (this._renderedTaskCount >= this._boardTasks.length) {
+      remove(this._loadMoreButtonComponent);
+    }
+  }
+
   _renderLoadMoreButton() {
-    let renderedTaskCount = TASK_COUNT_PER_STEP;
+    render(this._boardComponent, this._loadMoreButtonComponent);
 
-    const loadMoreButtonComponent = new LoadMoreButtonView();
-
-    render(this._boardComponent, loadMoreButtonComponent);
-
-    loadMoreButtonComponent.setClickHandler(() => {
-      this._renderTasks(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP);
-
-      renderedTaskCount += TASK_COUNT_PER_STEP;
-
-      if (renderedTaskCount >= this._boardTasks.length) {
-        remove(loadMoreButtonComponent);
-      }
-    });
+    this._loadMoreButtonComponent.setClickHandler(this._handleLoadMoreButtonClick);
   }
 
   _renderTaskList() {
@@ -108,7 +109,7 @@ export default class BoardPresenter {
 
     this._renderSorting();
 
-    render(this._boardComponent, this._taskListComponent); // move?
+    render(this._boardComponent, this._taskListComponent);
     this._renderTaskList();
   }
 }
