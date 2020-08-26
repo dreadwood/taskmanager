@@ -21,3 +21,9 @@ export const DAYS_WEEK = [
   `sa`,
   `su`,
 ];
+
+export const SortingTypes = {
+  DEFAULT: `default`,
+  DATE_UP: `date-up`,
+  DATE_DOWN: `date-down`,
+};
