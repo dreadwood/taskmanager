@@ -1,4 +1,5 @@
-import {isExpiredTask, isRepeatingTask, humanizeTaskDate, createElement} from '../utils.js';
+import {isExpiredTask, isRepeatingTask, humanizeTaskDate} from '../utils/task.js';
+import AbstractView from './abstract.js';
 
 const createButtonMarkup = (name, isActive = true) => {
   return (
@@ -72,25 +73,25 @@ const createTaskTemplate = (task) => {
   );
 };
 
-export default class TaskView {
+export default class TaskView extends AbstractView {
   constructor(task) {
-    this._element = null;
+    super();
     this._task = task;
+
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
     return createTaskTemplate(this._task);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
   }
 
-  removeElement() {
-    this._element = null;
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, this._editClickHandler);
   }
 }
