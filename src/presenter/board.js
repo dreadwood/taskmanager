@@ -1,5 +1,5 @@
 import BoardView from "../view/board.js";
-import SortView from "../view/sort.js";
+import SortingView from "../view/sort.js";
 import TaskListView from "../view/task-list.js";
 import NoTaskView from "../view/no-task.js";
 import TaskView from "../view/task.js";
@@ -14,7 +14,7 @@ export default class Board {
     this._boardContainer = boardContainer;
 
     this._boardComponent = new BoardView();
-    this._sortComponent = new SortView();
+    this._sortingComponent = new SortingView();
     this._taskListComponent = new TaskListView();
     this._noTaskComponent = new NoTaskView();
   }
@@ -28,21 +28,22 @@ export default class Board {
     this._renderBoard();
   }
 
-  _renderSort() {
-    // Метод для рендеринга сортировки
+  _renderSorting() {
+    render(this._boardComponent, this._sortingComponent);
   }
 
-  _renderTask() {
+  _renderTask(task) {
     // Метод, куда уйдёт логика созданию и рендерингу компонетов задачи,
     // текущая функция renderTask в main.js
   }
 
   _renderTasks(from, to) {
-    // Метод для рендеринга N-задач за раз
+    this._boardTasks
+      .slice(from, to)
+      .forEach((task) => this._renderTask(task));
   }
 
   _renderNoTasks() {
-    // Метод для рендеринга заглушки
     render(this._boardComponent, this._noTaskComponent, RenderPosition.AFTER_BEGIN); // remove RenderPosition
   }
 
@@ -57,7 +58,7 @@ export default class Board {
       return;
     }
 
-    this._renderSort();
+    this._renderSorting();
 
     this._renderTasks(0, Math.min(this._boardTasks.length, TASK_COUNT_PER_STEP));
 
