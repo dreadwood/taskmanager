@@ -1,6 +1,6 @@
 import TaskView from "../view/task.js";
 import TaskEditView from "../view/task-edit.js";
-import {render, replace} from "../utils/render.js";
+import {render, replace, remove} from "../utils/render.js";
 
 export default class TaskPresenter {
   constructor(taskListContainer) {
@@ -17,13 +17,35 @@ export default class TaskPresenter {
   init(task) {
     this._task = task;
 
+    const prevTaskComponent = this._taskComponent;
+    const prevTaskEditComponent = this._taskEditComponent;
+
     this._taskComponent = new TaskView(task);
     this._taskEditComponent = new TaskEditView(task);
 
     this._taskComponent.setEditClickHandler(this._handleEditClick);
     this._taskEditComponent.setFormSubmitHandler(this._handleFormSubmit);
 
-    render(this._taskListContainer, this._taskComponent);
+    if (prevTaskComponent === null || prevTaskEditComponent === null) {
+      render(this._taskListContainer, this._taskComponent);
+      return;
+    }
+
+    if (this._taskListContainer.getElement().contains(prevTaskComponent.getElement())) {
+      replace(this._taskComponent, prevTaskComponent);
+    }
+
+    if (this._taskListContainer.getElement().contains(prevTaskEditComponent.getElement())) {
+      replace(this._taskEditComponent, prevTaskEditComponent);
+    }
+
+    remove(prevTaskComponent);
+    remove(prevTaskEditComponent);
+  }
+
+  destroy() {
+    remove(this._taskComponent);
+    remove(this._taskEditComponent);
   }
 
   _replaceCardToForm() {
