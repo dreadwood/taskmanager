@@ -7,6 +7,7 @@ import TaskPresenter from './task.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
 import {SortingTypes} from '../const.js';
 import {sortTaskUp, sortTaskDown} from '../utils/task.js';
+import {updateItem} from '../utils/common.js';
 
 const TASK_COUNT_PER_STEP = 8;
 
@@ -23,6 +24,7 @@ export default class BoardPresenter {
     this._noTaskComponent = new NoTaskView();
     this._loadMoreButtonComponent = new LoadMoreButtonView();
 
+    this._handleTaskChange = this._handleTaskChange.bind(this);
     this._handleLoadMoreButtonClick = this._handleLoadMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
@@ -34,6 +36,12 @@ export default class BoardPresenter {
     render(this._boardContainer, this._boardComponent);
 
     this._renderBoard();
+  }
+
+  _handleTaskChange(updatedTask) {
+    this._boardTasks = updateItem(this._boardTasks, updatedTask);
+    this._sourceBoardTasks = updateItem(this._sourceBoardTasks, updatedTask);
+    this._taskPresenter[updatedTask.id].init(updatedTask);
   }
 
   _sortTasks(sortingType) {
