@@ -161,6 +161,17 @@ export default class TaskEditView extends AbstractView {
     return createTaskEditTemplate(this._data);
   }
 
+  updateElement() {
+    let prevElement = this.getTemplate();
+    const parent = prevElement.parentElement;
+    this.removeElement();
+
+    const newElement = this.getElement();
+
+    parent.replaceChild(newElement, prevElement);
+    prevElement = null;
+  }
+
   _formSubmitHandler(evt) {
     evt.preventDefault();
     this._callback.formSubmit(TaskEditView.parseDataToTask(this._data));
