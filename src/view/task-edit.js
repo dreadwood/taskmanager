@@ -161,6 +161,20 @@ export default class TaskEditView extends AbstractView {
     return createTaskEditTemplate(this._data);
   }
 
+  updateData(update) {
+    if (!update) {
+      return;
+    }
+
+    this._data = Object.assign(
+        {},
+        this._data,
+        update
+    );
+
+    this.updateElement();
+  }
+
   updateElement() {
     let prevElement = this.getTemplate();
     const parent = prevElement.parentElement;
