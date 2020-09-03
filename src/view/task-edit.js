@@ -103,6 +103,8 @@ const createTaskEditTemplate = (data) => {
   const repeatingTemplate = createTaskEditRepeatingTemplate(repeatingDays, isRepeating);
   const colorsTemplate = createTaskEditColorsTemplate(color);
 
+  const isSubmitDisabled = isRepeating && !isRepeatingTask(repeatingDays);
+
   return (
     `<article class="card card--edit card--${color} ${repeatingClass} ${deadlineClass}">
       <form class="card__form" method="get">
@@ -140,8 +142,15 @@ const createTaskEditTemplate = (data) => {
           </div>
 
           <div class="card__status-btns">
-            <button class="card__save" type="submit">save</button>
-            <button class="card__delete" type="button">delete</button>
+            <button
+              class="card__save"
+              type="submit"
+              ${isSubmitDisabled ? `disabled` : ``}
+            >save</button>
+            <button
+              class="card__delete"
+              type="button"
+            >delete</button>
           </div>
         </div>
       </form>
@@ -158,6 +167,8 @@ export default class TaskEditView extends AbstractView {
     this._descriptionInputHandler = this._descriptionInputHandler.bind(this);
     this._dueDateToggleHandler = this._dueDateToggleHandler.bind(this);
     this._repeatingToggleHandler = this._repeatingToggleHandler.bind(this);
+    this._repeatingChangeHandler = this._repeatingChangeHandler.bind(this);
+    this._colorChangeHandler = this._colorChangeHandler.bind(this);
 
     this._setInnerHandlers();
   }
@@ -212,12 +223,23 @@ export default class TaskEditView extends AbstractView {
     this.getElement()
       .querySelector(`.card__text`)
       .addEventListener(`input`, this._descriptionInputHandler);
+
+    if (this._data.isRepeating) {
+      this.getElement()
+        .querySelector(`.card__repeat-days-inner`)
+        .addEventListener(`change`, this._repeatingChangeHandler);
+    }
+
+    this.getElement()
+      .querySelector(`.card__colors-wrap`)
+      .addEventListener(`change`, this._colorChangeHandler);
   }
 
   _dueDateToggleHandler(evt) {
     evt.preventDefault();
     this.updateData({
       isDueDate: !this._data.isDueDate,
+      isRepeating: !this._data.isDueDate && false,
     });
   }
 
@@ -225,6 +247,7 @@ export default class TaskEditView extends AbstractView {
     evt.preventDefault();
     this.updateData({
       isRepeating: !this._data.isRepeating,
+      isDueDate: !this._data.isRepeating && false,
     });
   }
 
@@ -233,6 +256,24 @@ export default class TaskEditView extends AbstractView {
     this.updateData({
       description: evt.target.value,
     }, true);
+  }
+
+  _repeatingChangeHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      repeatingDays: Object.assign(
+          {},
+          this._data.repeatingDays,
+          {[evt.target.value]: evt.target.checked}
+      )
+    });
+  }
+
+  _colorChangeHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      color: evt.target.value,
+    });
   }
 
   _formSubmitHandler(evt) {
