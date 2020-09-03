@@ -30,7 +30,7 @@ const createTaskEditDateTemplate = (dueDate, isDueDate) => {
           type="text"
           placeholder=""
           name="date"
-          value="${humanizeTaskDate(dueDate)}"
+          value="${dueDate !== null ? humanizeTaskDate(dueDate) : ``}"
         >
       </label>
     </fieldset>` : ``}`
@@ -180,7 +180,7 @@ export default class TaskEditView extends AbstractView {
   }
 
   updateElement() {
-    let prevElement = this.getTemplate();
+    let prevElement = this.getElement();
     const parent = prevElement.parentElement;
     this.removeElement();
 
