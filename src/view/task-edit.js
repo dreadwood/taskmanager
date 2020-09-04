@@ -1,5 +1,5 @@
 import {COLORS} from '../const.js';
-import {isRepeatingTask, humanizeTaskDate} from '../utils/task.js';
+import {isRepeatingTask, formatTaskDueDate} from '../utils/task.js';
 import SmartView from './smart.js';
 import flatpickr from 'flatpickr';
 
@@ -33,7 +33,7 @@ const createTaskEditDateTemplate = (dueDate, isDueDate) => {
           type="text"
           placeholder=""
           name="date"
-          value="${dueDate !== null ? humanizeTaskDate(dueDate) : ``}"
+          value="${formatTaskDueDate(dueDate)}"
         >
       </label>
     </fieldset>` : ``}`
