@@ -1,4 +1,4 @@
-import {isExpiredTask, isRepeatingTask, humanizeTaskDate} from '../utils/task.js';
+import {isExpiredTask, isRepeatingTask, formatTaskDueDate} from '../utils/task.js';
 import AbstractView from './abstract.js';
 
 const createButtonMarkup = (name, isActive = true) => {
@@ -20,9 +20,7 @@ const createTaskTemplate = (task) => {
     isArchive,
   } = task;
 
-  const date = (dueDate !== null)
-    ? humanizeTaskDate(dueDate)
-    : ``;
+  const date = formatTaskDueDate(dueDate);
 
   const deadlineClass = isExpiredTask(dueDate)
     ? `card--deadline`
