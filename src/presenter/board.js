@@ -31,16 +31,20 @@ export default class BoardPresenter {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
 
-  init(boardTasks) {
-    this._boardTasks = boardTasks.slice();
-    this._sourceBoardTasks = boardTasks.slice();
-
+  init() {
     render(this._boardContainer, this._boardComponent);
 
     this._renderBoard();
   }
 
   _getTasks() {
+    switch (this._currentSortType) {
+      case SortingTypes.DATE_UP:
+        return this._tasksModel.getTasks().slice().sort(sortTaskUp);
+      case SortingTypes.DATE_DOWN:
+        return this._tasksModel.getTasks().slice().sort(sortTaskDown);
+    }
+
     return this._tasksModel.getTasks();
   }
 
@@ -51,24 +55,8 @@ export default class BoardPresenter {
   }
 
   _handleTaskChange(updatedTask) {
-    this._boardTasks = updateItem(this._boardTasks, updatedTask);
-    this._sourceBoardTasks = updateItem(this._sourceBoardTasks, updatedTask);
+
     this._taskPresenter[updatedTask.id].init(updatedTask);
-  }
-
-  _sortTasks(sortingType) {
-    switch (sortingType) {
-      case SortingTypes.DATE_UP:
-        this._boardTasks.sort(sortTaskUp);
-        break;
-      case SortingTypes.DATE_DOWN:
-        this._boardTasks.sort(sortTaskDown);
-        break;
-      default:
-        this._boardTasks = this._sourceBoardTasks.slice();
-    }
-
-    this._currentSortType = sortingType;
   }
 
   _handleSortTypeChange(sortingType) {
@@ -76,7 +64,7 @@ export default class BoardPresenter {
       return;
     }
 
-    this._sortTasks(sortingType);
+    this._currentSortType = sortingType;
     this._clearTaskList();
     this._renderTaskList();
   }
@@ -92,10 +80,8 @@ export default class BoardPresenter {
     this._taskPresenter[task.id] = taskPresenter;
   }
 
-  _renderTasks(from, to) {
-    this._boardTasks
-      .slice(from, to)
-      .forEach((task) => this._renderTask(task));
+  _renderTasks(tasks) {
+    tasks.forEach((task) => this._renderTask(task));
   }
 
   _renderNoTasks() {
@@ -103,10 +89,14 @@ export default class BoardPresenter {
   }
 
   _handleLoadMoreButtonClick() {
-    this._renderTasks(this._renderedTaskCount, this._renderedTaskCount + TASK_COUNT_PER_STEP);
-    this._renderedTaskCount += TASK_COUNT_PER_STEP;
+    const taskCount = this._getTasks().length;
+    const newRenderedTaskCount = Math.min(taskCount, this._renderedTaskCount + TASK_COUNT_PER_STEP);
+    const tasks = this._getTasks().slice(this._renderedTaskCount, newRenderedTaskCount);
 
-    if (this._renderedTaskCount >= this._boardTasks.length) {
+    this._renderTasks(tasks);
+    this._renderedTaskCount = newRenderedTaskCount;
+
+    if (this._renderedTaskCount >= taskCount) {
       remove(this._loadMoreButtonComponent);
     }
   }
@@ -126,15 +116,18 @@ export default class BoardPresenter {
   }
 
   _renderTaskList() {
-    this._renderTasks(0, Math.min(this._boardTasks.length, TASK_COUNT_PER_STEP));
+    const taskCount = this._getTasks().length;
+    const tasks = this._getTasks().slice(0, Math.min(taskCount, TASK_COUNT_PER_STEP));
 
-    if (this._boardTasks.length > TASK_COUNT_PER_STEP) {
+    this._renderTasks(tasks);
+
+    if (taskCount > TASK_COUNT_PER_STEP) {
       this._renderLoadMoreButton();
     }
   }
 
   _renderBoard() {
-    if (this._boardTasks.every((task) => task.isArchive)) {
+    if (this._getTasks().every((task) => task.isArchive)) {
       this._renderNoTasks();
       return;
     }
