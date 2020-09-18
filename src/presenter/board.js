@@ -18,11 +18,12 @@ export default class BoardPresenter {
     this._currentSortType = SortingTypes.DEFAULT;
     this._taskPresenter = {};
 
+    this._sortingComponent = null;
+    this._loadMoreButtonComponent = null;
+
     this._boardComponent = new BoardView();
-    this._sortingComponent = new SortingView();
     this._taskListComponent = new TaskListView();
     this._noTaskComponent = new NoTaskView();
-    this._loadMoreButtonComponent = new LoadMoreButtonView();
 
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
@@ -78,9 +79,16 @@ export default class BoardPresenter {
         break;
       case UpdateType.MINOR:
         // - обновить список (например, когда задача ушла в архив)
+        this._clearBoard();
+        this._renderBoard();
         break;
       case UpdateType.MAJOR:
         // - обновить всю доску (например, при переключении фильтра)
+        this._clearBoard({
+          resetRenderedTaskCount: true,
+          resetSortType: true,
+        });
+        this._renderBoard();
         break;
     }
   }
@@ -91,13 +99,21 @@ export default class BoardPresenter {
     }
 
     this._currentSortType = sortingType;
-    this._clearTaskList();
-    this._renderTaskList();
+    this._clearBoard({
+      resetRenderedTaskCount: true
+    });
+    this._renderBoard();
   }
 
   _renderSorting() {
-    render(this._boardComponent, this._sortingComponent);
+    if (this._sortingComponent !== null) {
+      this._sortingComponent = null;
+    }
+
+    this._sortingComponent = new SortingView(this._currentSortType);
     this._sortingComponent.setSortingTypeChangeHandler(this._handleSortTypeChange);
+
+    render(this._boardComponent, this._sortingComponent);
   }
 
   _renderTask(task) {
@@ -128,9 +144,14 @@ export default class BoardPresenter {
   }
 
   _renderLoadMoreButton() {
-    render(this._boardComponent, this._loadMoreButtonComponent);
+    if (this._loadMoreButtonComponent !== null) {
+      this._loadMoreButtonComponent = null;
+    }
 
+    this._loadMoreButtonComponent = new LoadMoreButtonView();
     this._loadMoreButtonComponent.setClickHandler(this._handleLoadMoreButtonClick);
+
+    render(this._boardComponent, this._loadMoreButtonComponent);
   }
 
   _clearTaskList() {
@@ -152,8 +173,37 @@ export default class BoardPresenter {
     }
   }
 
+  _clearBoard({resetRenderedTaskCount = false, resetSortType = false} = {}) {
+    const taskCount = this._getTasks().length;
+
+    Object
+      .values(this._taskPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._taskPresenter = {};
+
+    remove(this._sortingComponent);
+    remove(this._noTaskComponent);
+    remove(this._loadMoreButtonComponent);
+
+    if (resetRenderedTaskCount) {
+      this._renderedTaskCount = TASK_COUNT_PER_STEP;
+    } else {
+      // На случай, если перерисовка доски вызвана
+      // уменьшением количества задач (например, удаление или перенос в архив)
+      // нужно скорректировать число показанных задач
+      this._renderedTaskCount = Math.min(taskCount, this._renderedTaskCount);
+    }
+
+    if (resetSortType) {
+      this._currentSortType = SortingTypes.DEFAULT;
+    }
+  }
+
   _renderBoard() {
-    if (this._getTasks().every((task) => task.isArchive)) {
+    const tasks = this._getTasks();
+    const taskCount = tasks.length;
+
+    if (taskCount === 0) {
       this._renderNoTasks();
       return;
     }
@@ -161,6 +211,11 @@ export default class BoardPresenter {
     this._renderSorting();
 
     render(this._boardComponent, this._taskListComponent);
-    this._renderTaskList();
+
+    this._renderTasks(tasks.slice(0, Math.min(taskCount, this._renderedTaskCount)));
+
+    if (taskCount > this._renderedTaskCount) {
+      this._renderLoadMoreButton();
+    }
   }
 }
