@@ -7,7 +7,6 @@ import TaskPresenter from './task.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
 import {SortingTypes} from '../const.js';
 import {sortTaskUp, sortTaskDown} from '../utils/task.js';
-import {updateItem} from '../utils/common.js';
 
 const TASK_COUNT_PER_STEP = 8;
 
@@ -25,10 +24,13 @@ export default class BoardPresenter {
     this._noTaskComponent = new NoTaskView();
     this._loadMoreButtonComponent = new LoadMoreButtonView();
 
-    this._handleTaskChange = this._handleTaskChange.bind(this);
+    this._handleViewAction = this._handleViewAction.bind(this);
+    this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleLoadMoreButtonClick = this._handleLoadMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+
+    this._tasksModel.addObserver(this._handleModelEvent);
   }
 
   init() {
@@ -54,9 +56,20 @@ export default class BoardPresenter {
       .forEach((presenter) => presenter.resetView());
   }
 
-  _handleTaskChange(updatedTask) {
+  _handleViewAction(actionType, updateType, update) {
+    console.log(actionType, updateType, update);
+    // Здесь будем вызывать обновление модели.
+    // actionType - действие пользователя, нужно чтобы понять, какой метод модели вызвать
+    // updateType - тип изменений, нужно чтобы понять, что после нужно обновить
+    // update - обновленные данные
+  }
 
-    this._taskPresenter[updatedTask.id].init(updatedTask);
+  _handleModelEvent(updateType, data) {
+    console.log(updateType, data);
+    // В зависимости от типа изменений решаем, что делать:
+    // - обновить часть списка (например, когда поменялось описание)
+    // - обновить список (например, когда задача ушла в архив)
+    // - обновить всю доску (например, при переключении фильтра)
   }
 
   _handleSortTypeChange(sortingType) {
@@ -75,7 +88,7 @@ export default class BoardPresenter {
   }
 
   _renderTask(task) {
-    const taskPresenter = new TaskPresenter(this._taskListComponent, this._handleTaskChange, this._handleModeChange);
+    const taskPresenter = new TaskPresenter(this._taskListComponent, this._handleViewAction, this._handleModeChange);
     taskPresenter.init(task);
     this._taskPresenter[task.id] = taskPresenter;
   }
