@@ -11,6 +11,7 @@ const createFilterItemTemplate = (filter, currentFilterType) => {
       name="filter"
       ${type === currentFilterType ? `checked` : ``}
       ${(count === 0) ? `disabled` : ``}
+      value="${type}"
     >
     <label for="filter__${name}" class="filter__label">
       ${name}
