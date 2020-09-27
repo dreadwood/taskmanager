@@ -1,20 +1,31 @@
 import SmartView from './smart.js';
 import {getCurrentDate} from '../utils/task.js';
-import {countCompletedTaskInDateRange} from '../utils/statistics.js';
+import {
+  countCompletedTaskInDateRange,
+  makeItemsUniq,
+  countTasksByColor,
+  colorToHex,
+} from '../utils/statistics.js';
 import flatpickr from 'flatpickr';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 const renderColorsChart = (colorsCtx, tasks) => {
   // Функция для отрисовки графика по цветам
+
+  const taskColors = tasks.map((task) => task.color);
+  const uniqColors = makeItemsUniq(taskColors);
+  const taskByColorCounts = uniqColors.map((color) => countTasksByColor(tasks, color));
+  const hexColors = uniqColors.map((color) => colorToHex[color]);
+
   return new Chart(colorsCtx, {
     plugins: [ChartDataLabels],
     type: `pie`,
     data: {
-      labels: [`BLACK`], // Сюда нужно передать названия уникальных цветов, они станут ярлыками
+      labels: uniqColors, // Сюда нужно передать названия уникальных цветов, они станут ярлыками
       datasets: [{
-        data: [1], // Сюда нужно передать в том же порядке количество задач по каждому цвету
-        backgroundColor: [`#000`] // Сюда нужно передать в том же порядке HEX каждого цвета
+        data: taskByColorCounts, // Сюда нужно передать в том же порядке количество задач по каждому цвету
+        backgroundColor: hexColors, // Сюда нужно передать в том же порядке HEX каждого цвета
       }]
     },
     options: {
@@ -140,7 +151,7 @@ const createStatisticsTemplate = (data) => {
             <input
               class="statistic__period-input"
               type="text"
-              placeholder="01 Feb - 08 Feb"
+              placeholder=""
             />
           </div>
 
@@ -149,13 +160,13 @@ const createStatisticsTemplate = (data) => {
             <span class="statistic__task-found">${completedTaskCount}</span> tasks were fulfilled.
           </p>
         </div>
-        <div class="statistic__line-graphic visually-hidden">
+        <div class="statistic__line-graphic">
           <canvas class="statistic__days" width="550" height="150"></canvas>
         </div>
       </div>
 
       <div class="statistic__circle">
-        <div class="statistic__colors-wrap visually-hidden">
+        <div class="statistic__colors-wrap">
           <canvas class="statistic__colors" width="400" height="300"></canvas>
         </div>
       </div>
