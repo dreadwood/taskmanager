@@ -1,34 +1,7 @@
-import {isExpiredTask, isExpiredTaskToday, isRepeatingTask} from '../utils/task.js';
 import AbstractView from './abstract.js';
 
-const taskToFilterMap = {
-  all: (tasks) => tasks.filter((task) => !task.isArchive).length,
-  overdue: (tasks) => tasks
-    .filter((task) => !task.isArchive)
-    .filter((task) => isExpiredTask(task.dueDate)).length,
-  today: (tasks) => tasks
-    .filter((task) => !task.isArchive)
-    .filter((task) => isExpiredTaskToday(task.dueDate)).length,
-  favorites: (tasks) => tasks
-    .filter((task) => !task.isArchive)
-    .filter((task) => task.isFavorite).length,
-  repeating: (tasks) => tasks
-    .filter((task) => !task.isArchive)
-    .filter((task) => isRepeatingTask(task.repeatingDays)).length,
-  archive: (tasks) => tasks.filter((task) => task.isArchive).length,
-};
-
-const generateFilter = (tasks) => {
-  return Object.entries(taskToFilterMap).map(([filterName, countTasks]) => {
-    return {
-      name: filterName,
-      count: countTasks(tasks),
-    };
-  });
-};
-
-const createFilterItemTemplate = (filter, isChecked) => {
-  const {name, count} = filter;
+const createFilterItemTemplate = (filter, currentFilterType) => {
+  const {type, name, count} = filter;
 
   return (
     `<input
@@ -36,8 +9,9 @@ const createFilterItemTemplate = (filter, isChecked) => {
       id="filter__${name}"
       class="filter__input visually-hidden"
       name="filter"
-      ${isChecked ? `checked` : ``}
+      ${type === currentFilterType ? `checked` : ``}
       ${(count === 0) ? `disabled` : ``}
+      value="${type}"
     >
     <label for="filter__${name}" class="filter__label">
       ${name}
@@ -46,10 +20,9 @@ const createFilterItemTemplate = (filter, isChecked) => {
   );
 };
 
-const createFilterTemplate = (tasks) => {
-  const filters = generateFilter(tasks);
-  const filterItemTemplate = filters
-    .map((filter, index) => createFilterItemTemplate(filter, index === 0))
+const createFilterTemplate = (filterItems, currentFilterType) => {
+  const filterItemTemplate = filterItems
+    .map((filter) => createFilterItemTemplate(filter, currentFilterType))
     .join(`\n`);
 
   return (
@@ -60,12 +33,25 @@ const createFilterTemplate = (tasks) => {
 };
 
 export default class FilterView extends AbstractView {
-  constructor(tasks) {
+  constructor(filters, currentFilterType) {
     super();
-    this._tasks = tasks;
+    this._filters = filters;
+    this._currentFilter = currentFilterType;
+
+    this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
   }
 
   getTemplate() {
-    return createFilterTemplate(this._tasks);
+    return createFilterTemplate(this._filters, this._currentFilter);
+  }
+
+  _filterTypeChangeHandler(evt) {
+    evt.preventDefault();
+    this._callback.filterTypeChange(evt.target.value);
+  }
+
+  setFilterTypeChangeHandler(callback) {
+    this._callback.filterTypeChange = callback;
+    this.getElement().addEventListener(`change`, this._filterTypeChangeHandler);
   }
 }
