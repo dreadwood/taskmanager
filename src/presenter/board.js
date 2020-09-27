@@ -139,7 +139,7 @@ export default class BoardPresenter {
     this._sortingComponent = new SortingView(this._currentSortType);
     this._sortingComponent.setSortingTypeChangeHandler(this._handleSortTypeChange);
 
-    render(this._boardComponent, this._sortingComponent);
+    render(this._boardComponent, this._sortingComponent, RenderPosition.AFTER_BEGIN);
   }
 
   _renderTask(task) {
@@ -153,7 +153,7 @@ export default class BoardPresenter {
   }
 
   _renderNoTasks() {
-    render(this._boardComponent, this._noTaskComponent, RenderPosition.AFTER_BEGIN); // remove RenderPosition
+    render(this._boardComponent, this._noTaskComponent, RenderPosition.AFTER_BEGIN);
   }
 
   _handleLoadMoreButtonClick() {
