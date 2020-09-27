@@ -19,8 +19,10 @@ const generateRepeatingDays = (repeating = false) => {
   }, {});
 };
 
+export const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+
 export const generateTask = () => {
-  const id = String(new Date().getTime() + Math.random());
+  const id = generateId();
   const description = getRandomArrayItems(DESCRIPTION);
   const dueDate = getRandomInteger() ? generateDate() : null;
   const repeatingDays = dueDate ? generateRepeatingDays() : generateRepeatingDays(true);
@@ -30,7 +32,7 @@ export const generateTask = () => {
 
   return {
     id,
-    description, // string (min 1, max 140)
+    description,
     dueDate,
     repeatingDays,
     color,
