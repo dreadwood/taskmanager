@@ -1,4 +1,5 @@
 import {Color} from '../const.js';
+import {isDatesEqual} from './task.js';
 import moment from 'moment';
 
 export const colorToHex = {
@@ -11,8 +12,18 @@ export const colorToHex = {
 
 export const makeItemsUniq = (items) => [...new Set(items)];
 
+export const parseChartDate = (date) => moment(date).format(`D MMM`);
+
 export const countTasksByColor = (tasks, color) => {
   return tasks.filter((task) => task.color === color).length;
+};
+
+export const countTasksInDateRange = (dates, tasks) => {
+  return dates.map(
+      (date) => tasks.filter(
+          (task) => isDatesEqual(task.dueDate, date)
+      ).length
+  );
 };
 
 export const countCompletedTaskInDateRange = (tasks, dateFrom, dateTo) => {
@@ -31,4 +42,16 @@ export const countCompletedTaskInDateRange = (tasks, dateFrom, dateTo) => {
 
     return counter;
   }, 0);
+};
+
+export const getDatesInRange = (dateFrom, dateTo) => {
+  const dates = [];
+  let stepDate = new Date(dateFrom);
+
+  while (moment(stepDate).isSameOrBefore(dateTo)) {
+    dates.push(new Date(stepDate));
+    stepDate.setDate(stepDate.getDate() + 1);
+  }
+
+  return dates;
 };

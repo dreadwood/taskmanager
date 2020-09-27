@@ -5,6 +5,9 @@ import {
   makeItemsUniq,
   countTasksByColor,
   colorToHex,
+  countTasksInDateRange,
+  parseChartDate,
+  getDatesInRange,
 } from '../utils/statistics.js';
 import flatpickr from 'flatpickr';
 import Chart from 'chart.js';
@@ -75,13 +78,17 @@ const renderColorsChart = (colorsCtx, tasks) => {
 
 const renderDaysChart = (daysCtx, tasks, dateFrom, dateTo) => {
   // Функция для отрисовки графика по датам
+  const dates = getDatesInRange(dateFrom, dateTo);
+  const parsedDates = dates.map(parseChartDate);
+  const taskInDateRangeCounts = countTasksInDateRange(dates, tasks);
+
   return new Chart(daysCtx, {
     plugins: [ChartDataLabels],
     type: `line`,
     data: {
-      labels: [`3 Sep`], // Сюда нужно передать названия дней
+      labels: parsedDates, // Сюда нужно передать названия дней
       datasets: [{
-        data: [1], // Сюда нужно передать в том же порядке количество задач по каждому дню
+        data: taskInDateRangeCounts, // Сюда нужно передать в том же порядке количество задач по каждому дню
         backgroundColor: `transparent`,
         borderColor: `#000000`,
         borderWidth: 1,
