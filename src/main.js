@@ -1,5 +1,5 @@
 import SiteMenuView from './view/site-menu.js';
-import StatisticView from './view/statistic.js';
+import StatisticsView from './view/statistics.js';
 import {generateTask} from './mock/task.js';
 import BoardPresenter from './presenter/board.js';
 import FilterPresenter from './presenter/filter.js';
@@ -62,4 +62,4 @@ siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 filterPresenter.init();
 // boardPresenter.init();
 
-render(mainElement, new StatisticView(tasksModel.getTasks()));
+render(mainElement, new StatisticsView(tasksModel.getTasks()));

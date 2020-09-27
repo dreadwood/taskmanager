@@ -1,9 +1,21 @@
 import SmartView from './smart.js';
 import {getCurrentDate} from '../utils/task.js';
+import {countCompletedTaskInDateRange} from '../utils/statistics.js';
 import flatpickr from 'flatpickr';
+import Chart from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-const createStatisticTemplate = () => {
-  const completedTaskCount = 0;
+const renderColorsChart = (colorsCtx, tasks) => {
+  // Функция для отрисовки графика по цветам
+};
+
+const renderDaysChart = (daysCtx, tasks, dateFrom, dateTo) => {
+  // Функция для отрисовки графика по датам
+};
+
+const createStatisticsTemplate = (data) => {
+  const {tasks, dateFrom, dateTo} = data;
+  const completedTaskCount = countCompletedTaskInDateRange(tasks, dateFrom, dateTo);
 
   return (
     `<section class="statistic container">
@@ -38,7 +50,7 @@ const createStatisticTemplate = () => {
   );
 };
 
-export default class StatisticView extends SmartView {
+export default class StatisticsView extends SmartView {
   constructor(tasks) {
     super();
 
@@ -53,6 +65,9 @@ export default class StatisticView extends SmartView {
       dateTo: getCurrentDate()
     };
 
+    this._colorsCart = null;
+    this._daysChart = null;
+
     this._dateChangeHandler = this._dateChangeHandler.bind(this);
 
     this._setCharts();
@@ -62,6 +77,11 @@ export default class StatisticView extends SmartView {
   removeElement() {
     super.removeElement();
 
+    if (this._colorsCart !== null || this._daysChart !== null) {
+      this._colorsCart = null;
+      this._daysChart = null;
+    }
+
     if (this._datepicker) {
       this._datepicker.destroy();
       this._datepicker = null;
@@ -69,7 +89,7 @@ export default class StatisticView extends SmartView {
   }
 
   getTemplate() {
-    return createStatisticTemplate(this._data);
+    return createStatisticsTemplate(this._data);
   }
 
   restoreHandlers() {
@@ -106,6 +126,16 @@ export default class StatisticView extends SmartView {
   }
 
   _setCharts() {
-    // Нужно отрисовать два графика
+    if (this._colorsCart !== null || this._daysChart !== null) {
+      this._colorsCart = null;
+      this._daysChart = null;
+    }
+
+    const {tasks, dateFrom, dateTo} = this._data;
+    const colorsCtx = this.getElement().querySelector(`.statistic__colors`);
+    const daysCtx = this.getElement().querySelector(`.statistic__days`);
+
+    this._colorsCart = renderColorsChart(colorsCtx, tasks);
+    this._daysChart = renderDaysChart(daysCtx, tasks, dateFrom, dateTo);
   }
 }
