@@ -4,13 +4,15 @@ export const DESCRIPTION = [
   `Пройти интенсив на соточку`,
 ];
 
-export const COLORS = [
-  `black`,
-  `yellow`,
-  `blue`,
-  `green`,
-  `pink`,
-];
+export const Color = {
+  BLACK: `black`,
+  YELLOW: `yellow`,
+  BLUE: `blue`,
+  GREEN: `green`,
+  PINK: `pink`
+};
+
+export const COLORS = Object.values(Color);
 
 export const DAYS_WEEK = [
   `mo`,
@@ -47,4 +49,10 @@ export const FilterType = {
   FAVORITES: `favorites`,
   REPEATING: `repeating`,
   ARCHIVE: `archive`
+};
+
+export const MenuItem = {
+  ADD_NEW_TASK: `ADD_NEW_TASK`,
+  TASKS: `TASKS`,
+  STATISTICS: `STATISTICS`
 };
