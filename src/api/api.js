@@ -2,7 +2,7 @@ const Method = {
   GET: `GET`,
   PUT: `PUT`,
   POST: `POST`,
-  DELETE: `DELETE`
+  DELETE: `DELETE`,
 };
 
 const SuccessHTTPStatusRange = {
@@ -26,7 +26,7 @@ export default class Api {
       url: `tasks/${task.id}`,
       method: Method.PUT,
       body: JSON.stringify(task),
-      headers: new Headers({"Content-Type": `application/json`})
+      headers: new Headers({"Content-Type": `application/json`}),
     })
       .then(Api.toJSON);
   }

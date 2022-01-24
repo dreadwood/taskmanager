@@ -7,7 +7,7 @@ export const colorToHex = {
   [Color.BLUE]: `#0c5cdd`,
   [Color.GREEN]: `#31b55c`,
   [Color.PINK]: `#ff3cb9`,
-  [Color.YELLOW]: `#ffe125`
+  [Color.YELLOW]: `#ffe125`,
 };
 
 export const makeItemsUniq = (items) => [...new Set(items)];

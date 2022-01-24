@@ -126,7 +126,7 @@ export default class BoardPresenter {
 
     this._currentSortType = sortingType;
     this._clearBoard({
-      resetRenderedTaskCount: true
+      resetRenderedTaskCount: true,
     });
     this._renderBoard();
   }

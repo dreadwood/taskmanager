@@ -56,33 +56,33 @@ export default class FilterPresenter {
       {
         type: FilterType.ALL,
         name: `All`,
-        count: filter[FilterType.ALL](tasks).length
+        count: filter[FilterType.ALL](tasks).length,
       },
       {
         type: FilterType.OVERDUE,
         name: `Overdue`,
-        count: filter[FilterType.OVERDUE](tasks).length
+        count: filter[FilterType.OVERDUE](tasks).length,
       },
       {
         type: FilterType.TODAY,
         name: `Today`,
-        count: filter[FilterType.TODAY](tasks).length
+        count: filter[FilterType.TODAY](tasks).length,
       },
       {
         type: FilterType.FAVORITES,
         name: `Favorites`,
-        count: filter[FilterType.FAVORITES](tasks).length
+        count: filter[FilterType.FAVORITES](tasks).length,
       },
       {
         type: FilterType.REPEATING,
         name: `Repeating`,
-        count: filter[FilterType.REPEATING](tasks).length
+        count: filter[FilterType.REPEATING](tasks).length,
       },
       {
         type: FilterType.ARCHIVE,
         name: `Archive`,
-        count: filter[FilterType.ARCHIVE](tasks).length
-      }
+        count: filter[FilterType.ARCHIVE](tasks).length,
+      },
     ];
   }
 }

@@ -6,7 +6,7 @@ import {UserAction, UpdateType} from '../const.js';
 
 const Mode = {
   DEFAULT: `DEFAULT`,
-  EDITING: `EDITING`
+  EDITING: `EDITING`,
 };
 
 export default class TaskPresenter {
@@ -103,7 +103,7 @@ export default class TaskPresenter {
             {},
             this._task,
             {
-              isFavorite: !this._task.isFavorite
+              isFavorite: !this._task.isFavorite,
             }
         )
     );
@@ -117,7 +117,7 @@ export default class TaskPresenter {
             {},
             this._task,
             {
-              isArchive: !this._task.isArchive
+              isArchive: !this._task.isArchive,
             }
         )
     );

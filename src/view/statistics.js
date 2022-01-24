@@ -29,13 +29,13 @@ const renderColorsChart = (colorsCtx, tasks) => {
       datasets: [{
         data: taskByColorCounts, // Сюда нужно передать в том же порядке количество задач по каждому цвету
         backgroundColor: hexColors, // Сюда нужно передать в том же порядке HEX каждого цвета
-      }]
+      }],
     },
     options: {
       plugins: {
         datalabels: {
-          display: false
-        }
+          display: false,
+        },
       },
       tooltips: {
         callbacks: {
@@ -45,7 +45,7 @@ const renderColorsChart = (colorsCtx, tasks) => {
             const total = allData.reduce((acc, it) => acc + parseFloat(it));
             const tooltipPercentage = Math.round((tooltipData / total) * 100);
             return `${tooltipData} TASKS — ${tooltipPercentage}%`;
-          }
+          },
         },
         displayColors: false,
         backgroundColor: `#ffffff`,
@@ -54,13 +54,13 @@ const renderColorsChart = (colorsCtx, tasks) => {
         borderWidth: 1,
         cornerRadius: 0,
         xPadding: 15,
-        yPadding: 15
+        yPadding: 15,
       },
       title: {
         display: true,
         text: `DONE BY: COLORS`,
         fontSize: 16,
-        fontColor: `#000000`
+        fontColor: `#000000`,
       },
       legend: {
         position: `left`,
@@ -69,10 +69,10 @@ const renderColorsChart = (colorsCtx, tasks) => {
           padding: 25,
           fontStyle: 500,
           fontColor: `#000000`,
-          fontSize: 13
-        }
-      }
-    }
+          fontSize: 13,
+        },
+      },
+    },
   });
 };
 
@@ -95,52 +95,52 @@ const renderDaysChart = (daysCtx, tasks, dateFrom, dateTo) => {
         lineTension: 0,
         pointRadius: 8,
         pointHoverRadius: 8,
-        pointBackgroundColor: `#000000`
-      }]
+        pointBackgroundColor: `#000000`,
+      }],
     },
     options: {
       plugins: {
         datalabels: {
           font: {
-            size: 8
+            size: 8,
           },
-          color: `#ffffff`
-        }
+          color: `#ffffff`,
+        },
       },
       scales: {
         yAxes: [{
           ticks: {
             beginAtZero: true,
-            display: false
+            display: false,
           },
           gridLines: {
             display: false,
-            drawBorder: false
-          }
+            drawBorder: false,
+          },
         }],
         xAxes: [{
           ticks: {
             fontStyle: `bold`,
-            fontColor: `#000000`
+            fontColor: `#000000`,
           },
           gridLines: {
             display: false,
-            drawBorder: false
-          }
-        }]
+            drawBorder: false,
+          },
+        }],
       },
       legend: {
-        display: false
+        display: false,
       },
       layout: {
         padding: {
-          top: 10
-        }
+          top: 10,
+        },
       },
       tooltips: {
-        enabled: false
-      }
-    }
+        enabled: false,
+      },
+    },
   });
 };
 
@@ -193,7 +193,7 @@ export default class StatisticsView extends SmartView {
         date.setDate(date.getDate() - daysToFullWeek);
         return date;
       })(),
-      dateTo: getCurrentDate()
+      dateTo: getCurrentDate(),
     };
 
     this._colorsCart = null;
@@ -235,7 +235,7 @@ export default class StatisticsView extends SmartView {
 
     this.updateData({
       dateFrom,
-      dateTo
+      dateTo,
     });
   }
 
@@ -251,7 +251,7 @@ export default class StatisticsView extends SmartView {
           mode: `range`,
           dateFormat: `j F`,
           defaultDate: [this._data.dateFrom, this._data.dateTo],
-          onChange: this._dateChangeHandler
+          onChange: this._dateChangeHandler,
         }
     );
   }

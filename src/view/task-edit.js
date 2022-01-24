@@ -17,8 +17,8 @@ const BLANK_TASK = {
     th: false,
     fr: false,
     sa: false,
-    su: false
-  }
+    su: false,
+  },
 };
 
 const createTaskEditDateTemplate = (dueDate, isDueDate) => {
@@ -215,7 +215,7 @@ export default class TaskEditView extends SmartView {
           {
             dateFormat: `j F`,
             defaultDate: this._data.dueDate,
-            onChange: this._dueDateChangeHandler
+            onChange: this._dueDateChangeHandler,
           }
       );
     }
@@ -281,7 +281,7 @@ export default class TaskEditView extends SmartView {
           {},
           this._data.repeatingDays,
           {[evt.target.value]: evt.target.checked}
-      )
+      ),
     });
   }
 
@@ -340,7 +340,7 @@ export default class TaskEditView extends SmartView {
         th: false,
         fr: false,
         sa: false,
-        su: false
+        su: false,
       };
     }
 
