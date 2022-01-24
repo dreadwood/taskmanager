@@ -1,26 +1,27 @@
 {
   "name": "task-manager",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "Учебный проект «Менеджер задач» от HTML Academy",
+  "description": "Проект «Менеджер задач»",
   "scripts": {
     "eslint": "eslint src/**/*.js",
     "test": "npm run eslint",
     "build": "webpack",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "prepare": "husky install",
+    "gh-pages": "push-dir --dir=public --branch=gh-pages"
   },
   "devDependencies": {
     "css-loader": "4.2.2",
     "eslint": "6.1.0",
     "eslint-config-htmlacademy": "0.5.2",
+    "husky": "7.0.4",
     "moment-locales-webpack-plugin": "1.2.0",
+    "push-dir": "0.4.1",
     "style-loader": "1.2.1",
     "webpack": "4.44.1",
     "webpack-cli": "3.3.12",
     "webpack-dev-server": "3.11.0"
-  },
-  "engines": {
-    "node": "10"
   },
   "dependencies": {
     "chart.js": "2.9.3",
