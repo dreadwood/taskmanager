@@ -337,11 +337,11 @@ export default class TaskEditView extends SmartView {
     const parsedTask = {...data};
 
     if (!data.isDueDate) {
-      data.dueDate = null;
+      parsedTask.dueDate = null;
     }
 
     if (!data.isRepeating) {
-      data.repeating = {
+      parsedTask.repeating = {
         mo: false,
         tu: false,
         we: false,
@@ -352,11 +352,11 @@ export default class TaskEditView extends SmartView {
       };
     }
 
-    delete data.isDueDate;
-    delete data.isRepeating;
-    delete data.isDisabled;
-    delete data.isSaving;
-    delete data.isDeleting;
+    delete parsedTask.isDueDate;
+    delete parsedTask.isRepeating;
+    delete parsedTask.isDisabled;
+    delete parsedTask.isSaving;
+    delete parsedTask.isDeleting;
 
     return parsedTask;
   }
