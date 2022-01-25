@@ -37,10 +37,10 @@ export const UserAction = {
 };
 
 export const UpdateType = {
-  PATCH: `PATCH`,
-  MINOR: `MINOR`,
-  MAJOR: `MAJOR`,
-  INIT: `INIT`,
+  PATCH: `PATCH`, // обновить часть списка (например, когда поменялся цвет)
+  MINOR: `MINOR`, // обновить список (например, когда задача ушла в архив)
+  MAJOR: `MAJOR`, // обновить всю доску (например, при переключении фильтра)
+  INIT: `INIT`, // при загрузке или ошибки загрузки данных
 };
 
 export const FilterType = {

@@ -4,7 +4,7 @@ import TaskListView from '../view/task-list.js';
 import NoTaskView from '../view/no-task.js';
 import LoadMoreButtonView from '../view/load-more-button.js';
 import LoadingView from '../view/loading.js';
-import TaskPresenter from './task.js';
+import TaskPresenter, {State as TaskPresenterViewState} from './task.js';
 import TaskNewPresenter from './task-new.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
 import {SortingTypes, UserAction, UpdateType} from '../const.js';
@@ -90,19 +90,22 @@ export default class BoardPresenter {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_TASK:
-        this._api.updateTask(update).then((response) => {
-          this._tasksModel.updateTask(updateType, response);
-        });
+        this._taskPresenter[update.id].setViewState(TaskPresenterViewState.SAVING);
+        this._api.updateTask(update)
+          .then((response) => this._tasksModel.updateTask(updateType, response))
+          .catch(() => this._taskPresenter[update.id].setViewState(TaskPresenterViewState.ABORTING));
         break;
       case UserAction.ADD_TASK:
-        this._api.addTask(update).then((response) => {
-          this._tasksModel.addTask(updateType, response);
-        });
+        this._taskNewPresenter.setSaving();
+        this._api.addTask(update)
+          .then((response) => this._tasksModel.addTask(updateType, response))
+          .catch(() => this._taskNewPresenter.setAbording());
         break;
       case UserAction.DELETE_TASK:
-        this._api.deleteTask(update).then(() => {
-          this._tasksModel.deleteTask(updateType, update);
-        });
+        this._taskPresenter[update.id].setViewState(TaskPresenterViewState.DELETING);
+        this._api.deleteTask(update)
+          .then(() => this._tasksModel.deleteTask(updateType, update))
+          .catch(() => this._taskPresenter[update.id].setViewState(TaskPresenterViewState.ABORTING));
         break;
     }
   }
@@ -110,16 +113,13 @@ export default class BoardPresenter {
   _handleModelEvent(updateType, data) {
     switch (updateType) {
       case UpdateType.PATCH:
-        // - обновить часть списка (например, когда поменялось описание)
         this._taskPresenter[data.id].init(data);
         break;
       case UpdateType.MINOR:
-        // - обновить список (например, когда задача ушла в архив)
         this._clearBoard();
         this._renderBoard();
         break;
       case UpdateType.MAJOR:
-        // - обновить всю доску (например, при переключении фильтра)
         this._clearBoard({
           resetRenderedTaskCount: true,
           resetSortType: true,
@@ -127,7 +127,6 @@ export default class BoardPresenter {
         this._renderBoard();
         break;
       case UpdateType.INIT:
-        // - при загрузке или ошибки загрузки данных
         this._isLoading = false;
         remove(this._loadingComponent);
         this._renderBoard();
