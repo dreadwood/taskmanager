@@ -25,7 +25,7 @@ const filterModel = new FilterModel();
 
 const siteMenuComponent = new SiteMenuView();
 
-const boardPresenter = new BoardPresenter(mainElement, tasksModel, filterModel);
+const boardPresenter = new BoardPresenter(mainElement, tasksModel, filterModel, api);
 const filterPresenter = new FilterPresenter(mainElement, filterModel, tasksModel);
 
 const handleTaskNewFormClose = () => {

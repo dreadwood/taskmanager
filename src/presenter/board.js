@@ -14,7 +14,7 @@ import {filter} from '../utils/filter.js';
 const TASK_COUNT_PER_STEP = 8;
 
 export default class BoardPresenter {
-  constructor(boardContainer, tasksModel, filterModel) {
+  constructor(boardContainer, tasksModel, filterModel, api) {
     this._boardContainer = boardContainer;
     this._tasksModel = tasksModel;
     this._filterModel = filterModel;
@@ -22,6 +22,7 @@ export default class BoardPresenter {
     this._currentSortType = SortingTypes.DEFAULT;
     this._taskPresenter = {};
     this._isLoading = true;
+    this._api = api;
 
     this._sortingComponent = null;
     this._loadMoreButtonComponent = null;
@@ -89,7 +90,9 @@ export default class BoardPresenter {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_TASK:
-        this._tasksModel.updateTask(updateType, update);
+        this._api.updateTask(update).then((response) => {
+          this._tasksModel.updateTask(updateType, response);
+        });
         break;
       case UserAction.ADD_TASK:
         this._tasksModel.addTask(updateType, update);
