@@ -3,6 +3,7 @@ import SortingView from '../view/sorting.js';
 import TaskListView from '../view/task-list.js';
 import NoTaskView from '../view/no-task.js';
 import LoadMoreButtonView from '../view/load-more-button.js';
+import LoadingView from '../view/loading.js';
 import TaskPresenter from './task.js';
 import TaskNewPresenter from './task-new.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
@@ -20,6 +21,7 @@ export default class BoardPresenter {
     this._renderedTaskCount = TASK_COUNT_PER_STEP;
     this._currentSortType = SortingTypes.DEFAULT;
     this._taskPresenter = {};
+    this._isLoading = true;
 
     this._sortingComponent = null;
     this._loadMoreButtonComponent = null;
@@ -27,6 +29,7 @@ export default class BoardPresenter {
     this._boardComponent = new BoardView();
     this._taskListComponent = new TaskListView();
     this._noTaskComponent = new NoTaskView();
+    this._loadingComponent = new LoadingView();
 
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
@@ -116,6 +119,12 @@ export default class BoardPresenter {
         });
         this._renderBoard();
         break;
+      case UpdateType.INIT:
+        // - при загрузке или ошибки загрузки данных
+        this._isLoading = false;
+        remove(this._loadingComponent);
+        this._renderBoard();
+        break;
     }
   }
 
@@ -156,6 +165,10 @@ export default class BoardPresenter {
     render(this._boardComponent, this._noTaskComponent, RenderPosition.AFTER_BEGIN);
   }
 
+  _renderLoading() {
+    render(this._boardComponent, this._loadingComponent, RenderPosition.AFTER_BEGIN);
+  }
+
   _handleLoadMoreButtonClick() {
     const taskCount = this._getTasks().length;
     const newRenderedTaskCount = Math.min(taskCount, this._renderedTaskCount + TASK_COUNT_PER_STEP);
@@ -192,6 +205,7 @@ export default class BoardPresenter {
 
     remove(this._sortingComponent);
     remove(this._noTaskComponent);
+    remove(this._loadingComponent);
     remove(this._loadMoreButtonComponent);
 
     if (resetRenderedTaskCount) {
@@ -209,6 +223,11 @@ export default class BoardPresenter {
   }
 
   _renderBoard() {
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
+
     const tasks = this._getTasks();
     const taskCount = tasks.length;
 

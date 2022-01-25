@@ -5,32 +5,25 @@ import FilterPresenter from './presenter/filter.js';
 import TasksModel from './model/tasks.js';
 import FilterModel from './model/filter.js';
 import Api from './api/api.js';
-import {generateTask} from './mock/task.js';
+// import {generateTask} from './mock/task.js';
 import {render, remove} from './utils/render.js';
 import {MenuItem, UpdateType, FilterType} from './const.js';
 
+// const TASK_COUNT = 22;
+// const tasks = new Array(TASK_COUNT).fill(``).map(generateTask);
 
-const TASK_COUNT = 22;
 const AUTHORIZATION = `Basic hSsilf82dcl1sa2j`;
 const END_POINT = `https://14.ecmascript.pages.academy/task-manager`;
-
-const tasks = new Array(TASK_COUNT).fill(``).map(generateTask);
-const api = new Api(END_POINT, AUTHORIZATION);
-
-api.getTasks().then((tasksServer) => {
-  console.log(tasksServer);
-});
-
-const tasksModel = new TasksModel();
-tasksModel.setTasks(tasks);
-
-const filterModel = new FilterModel();
 
 const mainElement = document.querySelector(`.main`);
 const headerElement = mainElement.querySelector(`.main__control`);
 
+const api = new Api(END_POINT, AUTHORIZATION);
+
+const tasksModel = new TasksModel();
+const filterModel = new FilterModel();
+
 const siteMenuComponent = new SiteMenuView();
-render(headerElement, siteMenuComponent);
 
 const boardPresenter = new BoardPresenter(mainElement, tasksModel, filterModel);
 const filterPresenter = new FilterPresenter(mainElement, filterModel, tasksModel);
@@ -74,5 +67,15 @@ const handleSiteMenuClick = (menuItem) => {
 
 siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 
+render(headerElement, siteMenuComponent);
 filterPresenter.init();
 boardPresenter.init();
+
+api.getTasks()
+  .then((tasks) => {
+    tasksModel.setTasks(UpdateType.INIT, tasks);
+  })
+  .catch(() => {
+    tasksModel.setTasks(UpdateType.INIT, []);
+  });
+
