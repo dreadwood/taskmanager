@@ -9,7 +9,7 @@ export const Color = {
   YELLOW: `yellow`,
   BLUE: `blue`,
   GREEN: `green`,
-  PINK: `pink`
+  PINK: `pink`,
 };
 
 export const COLORS = Object.values(Color);
@@ -33,13 +33,13 @@ export const SortingTypes = {
 export const UserAction = {
   UPDATE_TASK: `UPDATE_TASK`,
   ADD_TASK: `ADD_TASK`,
-  DELETE_TASK: `DELETE_TASK`
+  DELETE_TASK: `DELETE_TASK`,
 };
 
 export const UpdateType = {
   PATCH: `PATCH`,
   MINOR: `MINOR`,
-  MAJOR: `MAJOR`
+  MAJOR: `MAJOR`,
 };
 
 export const FilterType = {
@@ -48,11 +48,11 @@ export const FilterType = {
   TODAY: `today`,
   FAVORITES: `favorites`,
   REPEATING: `repeating`,
-  ARCHIVE: `archive`
+  ARCHIVE: `archive`,
 };
 
 export const MenuItem = {
   ADD_NEW_TASK: `ADD_NEW_TASK`,
   TASKS: `TASKS`,
-  STATISTICS: `STATISTICS`
+  STATISTICS: `STATISTICS`,
 };

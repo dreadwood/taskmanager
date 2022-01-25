@@ -17,8 +17,8 @@ const END_POINT = `https://14.ecmascript.pages.academy/task-manager`;
 const tasks = new Array(TASK_COUNT).fill(``).map(generateTask);
 const api = new Api(END_POINT, AUTHORIZATION);
 
-api.getTasks().then((task) => {
-  console.log(task);
+api.getTasks().then((tasksServer) => {
+  console.log(tasksServer);
 });
 
 const tasksModel = new TasksModel();
