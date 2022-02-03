@@ -37,7 +37,7 @@ export default class Api {
 
   addTask(task) {
     return this._load({
-      url: `tasks  `,
+      url: `tasks`,
       method: Method.POST,
       body: JSON.stringify(TasksModel.adaptToServer(task)),
       headers: new Headers({"Content-Type": `application/json`}),
@@ -51,6 +51,16 @@ export default class Api {
       url: `tasks/${task.id}`,
       method: Method.DELETE,
     });
+  }
+
+  sync(data) {
+    return this._load({
+      url: `tasks`,
+      method: Method.POST,
+      body: JSON.stringify(data),
+      headers: new Headers({"Content-Type": `application/json`}),
+    })
+      .then(Api.toJSON);
   }
 
   _load({
