@@ -168,8 +168,6 @@ export default class TaskPresenter {
         isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
         update
     );
-
-    // this._replaceFormToCard();
   }
 
   _handleDeleteClick(task) {

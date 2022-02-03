@@ -61,11 +61,6 @@ export default class SiteMenuView extends AbstractView {
     return createSiteMenuTemplate();
   }
 
-  _menuClickHandler(evt) {
-    evt.preventDefault();
-    this._callback.menuClick(evt.target.value);
-  }
-
   setMenuClickHandler(callback) {
     this._callback.menuClick = callback;
     this.getElement().addEventListener(`change`, this._menuClickHandler);
@@ -77,5 +72,10 @@ export default class SiteMenuView extends AbstractView {
     if (item !== null) {
       item.checked = true;
     }
+  }
+
+  _menuClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.menuClick(evt.target.value);
   }
 }

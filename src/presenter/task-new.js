@@ -1,5 +1,4 @@
 import TaskEditView from '../view/task-edit.js';
-import {generateId} from '../mock/task.js';
 import {remove, render, RenderPosition} from '../utils/render.js';
 import {UserAction, UpdateType} from '../const.js';
 
@@ -70,7 +69,7 @@ export default class TaskNewPresenter {
     this._changeData(
         UserAction.ADD_TASK,
         UpdateType.MINOR,
-        Object.assign({id: generateId()}, task)
+        task,
     );
     this.destroy();
   }

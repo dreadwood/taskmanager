@@ -1,9 +1,3 @@
-export const DESCRIPTION = [
-  `Изучить теорию`,
-  `Сделать домашку`,
-  `Пройти интенсив на соточку`,
-];
-
 export const Color = {
   BLACK: `black`,
   YELLOW: `yellow`,
@@ -13,16 +7,6 @@ export const Color = {
 };
 
 export const COLORS = Object.values(Color);
-
-export const DAYS_WEEK = [
-  `mo`,
-  `tu`,
-  `we`,
-  `th`,
-  `fr`,
-  `sa`,
-  `su`,
-];
 
 export const SortingTypes = {
   DEFAULT: `default`,

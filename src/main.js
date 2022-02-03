@@ -7,13 +7,8 @@ import FilterModel from './model/filter.js';
 import Api from './api/api.js';
 import Store from './api/store.js';
 import Provider from './api/provider.js';
-// import {generateTask} from './mock/task.js';
 import {render, remove} from './utils/render.js';
 import {MenuItem, UpdateType, FilterType} from './const.js';
-
-
-// const TASK_COUNT = 22;
-// const tasks = new Array(TASK_COUNT).fill(``).map(generateTask);
 
 const AUTHORIZATION = `Basic hSsilf82dcl1sa2j`;
 const END_POINT = `https://15.ecmascript.pages.academy/task-manager`;
