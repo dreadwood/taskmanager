@@ -5,27 +5,35 @@ import FilterPresenter from './presenter/filter.js';
 import TasksModel from './model/tasks.js';
 import FilterModel from './model/filter.js';
 import Api from './api/api.js';
+import Store from './api/store.js';
+import Provider from './api/provider.js';
 // import {generateTask} from './mock/task.js';
 import {render, remove} from './utils/render.js';
 import {MenuItem, UpdateType, FilterType} from './const.js';
+
 
 // const TASK_COUNT = 22;
 // const tasks = new Array(TASK_COUNT).fill(``).map(generateTask);
 
 const AUTHORIZATION = `Basic hSsilf82dcl1sa2j`;
 const END_POINT = `https://15.ecmascript.pages.academy/task-manager`;
+const STORE_PREFIX = `taskmanager-localstorage`;
+const STORE_VER = `v12.1`;
+const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
 
 const mainElement = document.querySelector(`.main`);
 const headerElement = mainElement.querySelector(`.main__control`);
 
 const api = new Api(END_POINT, AUTHORIZATION);
+const store = new Store(STORE_NAME, window.localStorage);
+const apiWithProvider = new Provider(api, store);
 
 const tasksModel = new TasksModel();
 const filterModel = new FilterModel();
 
 const siteMenuComponent = new SiteMenuView();
 
-const boardPresenter = new BoardPresenter(mainElement, tasksModel, filterModel, api);
+const boardPresenter = new BoardPresenter(mainElement, tasksModel, filterModel, apiWithProvider);
 const filterPresenter = new FilterPresenter(mainElement, filterModel, tasksModel);
 
 const handleTaskNewFormClose = () => {
@@ -68,7 +76,7 @@ const handleSiteMenuClick = (menuItem) => {
 filterPresenter.init();
 boardPresenter.init();
 
-api.getTasks()
+apiWithProvider.getTasks()
   .then((tasks) => {
     tasksModel.setTasks(UpdateType.INIT, tasks);
     siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
@@ -88,4 +96,13 @@ window.addEventListener(`load`, () => {
     .catch(() => {
       console.error(`ServiceWorker isn't available`); // eslint-disable-line
     });
+});
+
+window.addEventListener(`online`, () => {
+  document.title = document.title.replace(` [offline]`, ``);
+  apiWithProvider.sync();
+});
+
+window.addEventListener(`offline`, () => {
+  document.title += ` [offline]`;
 });

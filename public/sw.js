@@ -31,7 +31,7 @@ self.addEventListener(`install`, (evt) => {
 self.addEventListener(`activate`, (evt) => {
   evt.waitUntil(
       caches.keys()
-        .then((keys) => keys.Promise.all(
+        .then((keys) => Promise.all(
             keys
               .map((key) => {
                 // удаляем ненужные кэши, которые относяться к приложению,

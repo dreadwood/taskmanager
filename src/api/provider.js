@@ -26,8 +26,8 @@ export default class Provider {
         .then((tasks) => {
           const items = createStoreStructure(tasks.map(
               TasksModel.adaptToServer
-          )); // зачем использовать adaptToServer?
-          this._stores.setItems(items);
+          ));
+          this._store.setItems(items);
           return tasks;
         });
     }
