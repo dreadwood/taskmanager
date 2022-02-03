@@ -13,7 +13,7 @@ import {MenuItem, UpdateType, FilterType} from './const.js';
 // const tasks = new Array(TASK_COUNT).fill(``).map(generateTask);
 
 const AUTHORIZATION = `Basic hSsilf82dcl1sa2j`;
-const END_POINT = `https://14.ecmascript.pages.academy/task-manager`;
+const END_POINT = `https://15.ecmascript.pages.academy/task-manager`;
 
 const mainElement = document.querySelector(`.main`);
 const headerElement = mainElement.querySelector(`.main__control`);
