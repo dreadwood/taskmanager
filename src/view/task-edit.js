@@ -336,11 +336,11 @@ export default class TaskEditView extends SmartView {
   static parseDataToTask(data) {
     const parsedTask = {...data};
 
-    if (!data.isDueDate) {
+    if (!parsedTask.isDueDate) {
       parsedTask.dueDate = null;
     }
 
-    if (!data.isRepeating) {
+    if (!parsedTask.isRepeating) {
       parsedTask.repeating = {
         mo: false,
         tu: false,

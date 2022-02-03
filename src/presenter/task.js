@@ -100,7 +100,6 @@ export default class TaskPresenter {
         });
         break;
       case State.ABORTING:
-        this._taskComponent.shake(resetFormState);
         this._taskEditComponent.shake(resetFormState);
         break;
     }
