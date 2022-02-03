@@ -12,19 +12,20 @@
     "gh-pages": "push-dir --dir=public --branch=gh-pages"
   },
   "devDependencies": {
-    "css-loader": "4.2.2",
-    "eslint": "6.1.0",
-    "eslint-config-htmlacademy": "0.5.2",
+    "css-loader": "6.6.0",
+    "eslint": "8.8.0",
+    "eslint-config-htmlacademy": "5.0.0",
+    "eslint-plugin-import-quotes": "0.0.1",
     "husky": "7.0.4",
     "moment-locales-webpack-plugin": "1.2.0",
     "push-dir": "0.4.1",
-    "style-loader": "1.2.1",
-    "webpack": "4.44.1",
-    "webpack-cli": "3.3.12",
-    "webpack-dev-server": "3.11.0"
+    "style-loader": "3.3.1",
+    "webpack": "5.68.0",
+    "webpack-cli": "4.9.2",
+    "webpack-dev-server": "4.7.4"
   },
   "dependencies": {
-    "chart.js": "2.9.3",
+    "chart.js": "2.9.4",
     "chartjs-plugin-datalabels": "0.7.0",
     "flatpickr": "4.6.6",
     "he": "1.2.0",

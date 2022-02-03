@@ -69,7 +69,7 @@ export default class TaskNewPresenter {
     this._changeData(
         UserAction.ADD_TASK,
         UpdateType.MINOR,
-        task,
+        task
     );
     this.destroy();
   }
